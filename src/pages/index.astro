@@ -1,48 +1,225 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const recentExperience = (await getCollection('experience'))
+	.sort((a, b) => a.data.eventDate.valueOf() - b.data.eventDate.valueOf())
+	.slice(0, 3);
+
+const recentBasics = (await getCollection('basics'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+
+const recentInsight = (await getCollection('insight'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style lang="scss">
+			.hero {
+				padding: 4rem 1rem 3rem;
+				text-align: center;
+				max-width: 680px;
+				margin: 0 auto;
+
+				h1 {
+					font-size: 2rem;
+					line-height: 1.3;
+					margin-bottom: 1rem;
+				}
+
+				p {
+					color: rgb(var(--gray));
+					font-size: 1.1rem;
+					line-height: 1.8;
+					margin: 0;
+				}
+			}
+
+			.pillars {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.5rem;
+				max-width: 960px;
+				margin: 2rem auto;
+				padding: 0 1rem;
+
+				@media (max-width: 720px) {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.pillar-card {
+				border: 1px solid #e7e7e7;
+				border-radius: 10px;
+				padding: 1.5rem;
+				text-decoration: none;
+				color: inherit;
+				display: block;
+				transition: 0.2s ease;
+
+				&:hover {
+					border-color: rgb(var(--accent));
+					box-shadow: var(--box-shadow);
+				}
+
+				h2 {
+					margin: 0 0 0.5rem 0;
+					font-size: 1.25rem;
+				}
+
+				p {
+					margin: 0;
+					font-size: 0.9rem;
+					color: rgb(var(--gray));
+					line-height: 1.6;
+				}
+			}
+
+			.recent-section {
+				max-width: 960px;
+				margin: 3rem auto;
+				padding: 0 1rem;
+
+				h2 {
+					font-size: 1rem;
+					text-transform: uppercase;
+					letter-spacing: 0.05em;
+					color: rgb(var(--gray));
+					margin-bottom: 1rem;
+					padding-bottom: 0.5rem;
+					border-bottom: 1px solid #e7e7e7;
+				}
+
+				ul {
+					list-style: none;
+					padding: 0;
+					margin: 0 0 0.5rem 0;
+					display: flex;
+					flex-direction: column;
+					gap: 0.5rem;
+				}
+
+				li a {
+					display: flex;
+					justify-content: space-between;
+					align-items: baseline;
+					gap: 1rem;
+					text-decoration: none;
+					color: rgb(var(--black));
+					padding: 0.4rem 0;
+					font-size: 0.95rem;
+					border-bottom: 1px solid transparent;
+					transition: 0.15s ease;
+
+					&:hover {
+						color: rgb(var(--accent));
+					}
+				}
+
+				.date {
+					font-size: 0.8rem;
+					color: rgb(var(--gray));
+					flex-shrink: 0;
+				}
+
+				.more-link {
+					display: inline-block;
+					font-size: 0.85rem;
+					color: rgb(var(--accent));
+					text-decoration: none;
+
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="hero">
+				<h1>燃え尽き症候群について</h1>
+				<p>
+					10代と40歳、2度の燃え尽きを経験しました。<br />
+					自分の記録と、集めた知識と、そこから考えたことを残しています。
+				</p>
+			</section>
+
+			<section class="pillars">
+				<a href="/experience" class="pillar-card">
+					<h2>体験</h2>
+					<p>2度の燃え尽き経験を、時系列で記録しています。</p>
+				</a>
+				<a href="/basics" class="pillar-card">
+					<h2>基礎知識</h2>
+					<p>バーンアウトの定義、よく知られた書籍や研究の紹介。</p>
+				</a>
+				<a href="/insight" class="pillar-card">
+					<h2>知見</h2>
+					<p>2度の経験と知識をもとに、自分なりに考えたこと。</p>
+				</a>
+			</section>
+
+			{recentExperience.length > 0 && (
+				<section class="recent-section">
+					<h2>体験 — 最近の記事</h2>
+					<ul>
+						{recentExperience.map((post) => (
+							<li>
+								<a href={`/experience/${post.id}/`}>
+									<span>{post.data.title}</span>
+									<span class="date"><FormattedDate date={post.data.eventDate} /></span>
+								</a>
+							</li>
+						))}
+					</ul>
+					<a href="/experience" class="more-link">すべての体験記事 →</a>
+				</section>
+			)}
+
+			{recentBasics.length > 0 && (
+				<section class="recent-section">
+					<h2>基礎知識 — 最近の記事</h2>
+					<ul>
+						{recentBasics.map((post) => (
+							<li>
+								<a href={`/basics/${post.id}/`}>
+									<span>{post.data.title}</span>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</a>
+							</li>
+						))}
+					</ul>
+					<a href="/basics" class="more-link">すべての基礎知識記事 →</a>
+				</section>
+			)}
+
+			{recentInsight.length > 0 && (
+				<section class="recent-section">
+					<h2>知見 — 最近の記事</h2>
+					<ul>
+						{recentInsight.map((post) => (
+							<li>
+								<a href={`/insight/${post.id}/`}>
+									<span>{post.data.title}</span>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</a>
+							</li>
+						))}
+					</ul>
+					<a href="/insight" class="more-link">すべての知見記事 →</a>
+				</section>
+			)}
 		</main>
 		<Footer />
 	</body>
