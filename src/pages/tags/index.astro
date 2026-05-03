@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const experience = await getCollection('experience');
+const basics = await getCollection('basics');
+const insight = await getCollection('insight');
+
+const allPosts = [...experience, ...basics, ...insight];
+
+const tagCounts = allPosts.reduce((acc, post) => {
+	for (const tag of post.data.tags) {
+		acc[tag] = (acc[tag] ?? 0) + 1;
+	}
+	return acc;
+}, {} as Record<string, number>);
+
+const tags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`タグ一覧 | ${SITE_TITLE}`} description="タグから記事を探す" />
+		<style lang="scss">
+			main {
+				max-width: 960px;
+				margin: 0 auto;
+				padding: 2rem 1rem;
+			}
+
+			h1 {
+				margin-bottom: 0.5rem;
+			}
+
+			.subtitle {
+				color: rgb(var(--gray));
+				margin-bottom: 2rem;
+			}
+
+			.tag-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			.tag-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				text-decoration: none;
+				background: #f0f0f0;
+				color: rgb(var(--black));
+				padding: 0.4rem 0.9rem;
+				border-radius: 999px;
+				font-size: 0.9rem;
+				transition: 0.2s ease;
+
+				&:hover {
+					background: rgb(var(--accent));
+					color: white;
+				}
+
+				.count {
+					font-size: 0.75rem;
+					opacity: 0.6;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>タグ一覧</h1>
+			<p class="subtitle">タグをクリックすると、体験・基礎知識・知見をまたいで関連記事が表示されます。</p>
+			<ul class="tag-list">
+				{tags.map(([tag, count]) => (
+					<li>
+						<a href={`/tags/${encodeURIComponent(tag)}/`} class="tag-link">
+							{tag}
+							<span class="count">{count}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
