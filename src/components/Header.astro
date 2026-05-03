@@ -19,7 +19,7 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 	</nav>
 </header>
-<style>
+<style lang="scss">
 	.wip-banner {
 		background: #fff8e1;
 		color: #7a6000;
@@ -27,7 +27,6 @@ import HeaderLink from './HeaderLink.astro';
 		padding: 4.5rem 1rem;
 		font-size: 1.5rem;
 		border-bottom: 1px solid #f0dc82;
-		width: 100%;
 		box-sizing: border-box;
 		position: relative;
 		left: 50%;
@@ -36,38 +35,40 @@ import HeaderLink from './HeaderLink.astro';
 		margin-right: -50vw;
 		width: 100vw;
 	}
+
 	header {
 		margin: 0;
 		padding: 0 1em;
 		background: white;
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
+
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
 		gap: 0.25em;
-	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		border-bottom-color: var(--accent);
-	}
-	@media (max-width: 720px) {
-		nav { font-size: 0.875em; }
-		nav a { padding: 0.75em 0.4em; }
+
+		// サイトタイトル部分のh2はヘッダー固有のサイズ調整
+		h2 {
+			font-size: 1em;
+		}
+
+		a {
+			padding: 1em 0.5em;
+			color: rgb(var(--text));
+			border-bottom: 4px solid transparent;
+
+			&.active {
+				border-bottom-color: var(--accent);
+			}
+		}
+
+		@media (max-width: 720px) {
+			font-size: 0.875em;
+
+			a { padding: 0.75em 0.4em; }
+		}
 	}
 </style>

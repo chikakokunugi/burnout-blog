@@ -42,12 +42,6 @@ const phaseLabel: Record<string, string> = {
 	<head>
 		<BaseHead title={`#${tag} | ${SITE_TITLE}`} description={`「${tag}」タグの記事一覧`} />
 		<style lang="scss">
-			main {
-				max-width: 960px;
-				margin: 0 auto;
-				padding: 2rem 1rem;
-			}
-
 			.tag-header {
 				margin-bottom: 2.5rem;
 
@@ -93,8 +87,7 @@ const phaseLabel: Record<string, string> = {
 				justify-content: space-between;
 				align-items: baseline;
 				gap: 1rem;
-				text-decoration: none;
-				color: rgb(var(--black));
+				color: rgb(var(--color-heading));
 				padding: 0.5rem 0.75rem;
 				border-radius: 6px;
 				transition: 0.15s ease;
@@ -102,6 +95,7 @@ const phaseLabel: Record<string, string> = {
 				&:hover {
 					background: #f5f5f5;
 					color: rgb(var(--accent));
+					text-decoration: none;
 				}
 			}
 
@@ -111,18 +105,11 @@ const phaseLabel: Record<string, string> = {
 				align-items: center;
 				flex-shrink: 0;
 				font-size: 0.8rem;
-				color: rgb(var(--gray));
-			}
-
-			.badge {
-				background: #f0f0f0;
-				padding: 0.1rem 0.4rem;
-				border-radius: 4px;
-				font-size: 0.75rem;
+				color: rgb(var(--color-muted));
 			}
 
 			.empty {
-				color: rgb(var(--gray));
+				color: rgb(var(--color-muted));
 				font-size: 0.9rem;
 			}
 		</style>
