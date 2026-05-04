@@ -32,6 +32,10 @@
 	--font-weight-normal: 400;
 	--font-weight-medium: 500;
 	--font-weight-bold: 700;
+
+	// フォントサイズ
+	--font-size-base: 16px;
+	--font-size-base-mobile: 14px;
 }
 
 // ─────────────────────────────────────
@@ -55,11 +59,11 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--color-text));
-	font-size: 20px;
+	font-size: var(--font-size-base);
 	line-height: 1.7;
 
 	@media (max-width: 720px) {
-		font-size: 18px;
+		font-size: var(--font-size-base-mobile);
 	}
 }
 
