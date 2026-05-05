@@ -6,6 +6,11 @@
 	--accent: #7890b8;
 	--accent-dark: #5b70a0;
 
+	// カテゴリカラー（RGB値）
+	--color-experience: 193, 120, 85;   // 体験 — 暖色系テラコッタ
+	--color-basics: 85, 120, 193;        // 基礎知識 — クールブルー
+	--color-insight: 85, 160, 120;       // 知見 — セージグリーン
+
 	// テキストカラー（RGB値）
 	--color-text: 110, 115, 125;
 	--color-heading: 100, 105, 115;
@@ -233,6 +238,68 @@ hr {
 	padding: 0.125rem 0.5rem;
 	border-radius: 4px;
 	font-size: 0.75rem;
+}
+
+// ─────────────────────────────────────
+// 注釈（インライン）
+// ─────────────────────────────────────
+
+// 注釈テキスト — 文章として自然に流れる
+.note-line {
+	display: block;
+	font-size: 0.85rem;
+	color: rgb(var(--color-muted));
+}
+
+// 参照リンク — カテゴリ名＋タイトルのカード型
+.note-ref {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	font-size: 0.82rem;
+	font-weight: 500;
+	text-decoration: none;
+	padding: 0.3rem 0.7rem 0.3rem 0.45rem;
+	border-radius: 4px;
+	border: 1px solid transparent;
+	margin: 7px 0 7px 0.3em;
+	vertical-align: middle;
+	white-space: nowrap;
+	transition: filter 0.15s ease, box-shadow 0.15s ease;
+
+	// カテゴリバッジ
+	.note-ref-cat {
+		font-size: 0.72rem;
+		font-weight: 600;
+		padding: 0.1em 0.4em;
+		border-radius: 3px;
+		letter-spacing: 0.02em;
+	}
+
+	&:hover {
+		text-decoration: none;
+		filter: brightness(0.93);
+		box-shadow: 0 1px 5px rgba(0,0,0,0.13);
+	}
+
+	&.ref-experience {
+		color: rgb(var(--color-experience));
+		background: rgba(var(--color-experience), 0.09);
+		border-color: rgba(var(--color-experience), 0.3);
+		.note-ref-cat { background: rgba(var(--color-experience), 0.18); }
+	}
+	&.ref-basics {
+		color: rgb(var(--color-basics));
+		background: rgba(var(--color-basics), 0.09);
+		border-color: rgba(var(--color-basics), 0.3);
+		.note-ref-cat { background: rgba(var(--color-basics), 0.18); }
+	}
+	&.ref-insight {
+		color: rgb(var(--color-insight));
+		background: rgba(var(--color-insight), 0.09);
+		border-color: rgba(var(--color-insight), 0.3);
+		.note-ref-cat { background: rgba(var(--color-insight), 0.18); }
+	}
 }
 
 // ─────────────────────────────────────

@@ -24,38 +24,41 @@ const recentInsight = (await getCollection('insight'))
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style lang="scss">
+			.page-content {
+				max-width: 720px;
+				margin: 0 auto;
+			}
+
+			// ─── ヒーロー ───────────────────────────────
 			.hero {
-				padding: 4rem 1rem 3rem;
+				padding: 2rem 0 2.5rem;
 				text-align: center;
 
-				h1 {
-					font-size: 2rem;
-					line-height: 1.3;
-				}
+				h1 { font-size: 2rem; line-height: 1.3; }
+				h2 { color: rgb(var(--color-muted)); }
+				p  { text-align: left; }
 
-				h2 {
+				.note {
+					font-size: 0.875rem;
 					color: rgb(var(--color-muted));
 				}
+			}
 
-				p {
-					text-align: left;
-				}
-
-				}
-
+			// ─── ピラーカード ────────────────────────────
 			.pillars {
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
 				gap: 1.5rem;
-				margin: 2rem auto;
+				margin: 2rem 0;
 
-				@media (max-width: 720px) {
+				@media (max-width: 600px) {
 					grid-template-columns: 1fr;
 				}
 			}
 
 			.pillar-card {
 				border: 1px solid #e7e7e7;
+				border-top-width: 4px;
 				border-radius: 10px;
 				padding: 1.5rem;
 				text-decoration: none;
@@ -63,31 +66,23 @@ const recentInsight = (await getCollection('insight'))
 				display: block;
 				transition: 0.2s ease;
 
-				&:hover {
-					border-color: rgb(var(--accent));
-					box-shadow: var(--box-shadow);
-				}
+				&:hover { box-shadow: var(--box-shadow); text-decoration: none; }
+				&.pillar-experience { border-top-color: rgb(var(--color-experience)); }
+				&.pillar-basics     { border-top-color: rgb(var(--color-basics)); }
+				&.pillar-insight    { border-top-color: rgb(var(--color-insight)); }
 
-				h2 {
-					margin: 0 0 0.5rem 0;
-					font-size: 1.25rem;
-				}
-
-				p {
-					margin: 0;
-					font-size: 0.9rem;
-					color: rgb(var(--gray));
-					line-height: 1.6;
-				}
+				h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
+				p  { margin: 0; font-size: 0.9rem; color: rgb(var(--gray)); line-height: 1.6; }
 			}
 
+			// ─── 最近の記事 ─────────────────────────────
 			.recent-section {
-				margin: 3rem auto;
+				margin: 2.5rem 0;
 
 				h2 {
-					font-size: 1rem;
+					font-size: 0.85rem;
 					text-transform: uppercase;
-					letter-spacing: 0.05em;
+					letter-spacing: 0.08em;
 					color: rgb(var(--gray));
 					margin-bottom: 1rem;
 					padding-bottom: 0.5rem;
@@ -97,7 +92,7 @@ const recentInsight = (await getCollection('insight'))
 				ul {
 					list-style: none;
 					padding: 0;
-					margin: 0 0 0.5rem 0;
+					margin: 0 0 0.5rem;
 					display: flex;
 					flex-direction: column;
 					gap: 0.5rem;
@@ -113,10 +108,7 @@ const recentInsight = (await getCollection('insight'))
 					font-size: 0.95rem;
 					transition: 0.15s ease;
 
-					&:hover {
-						color: rgb(var(--accent));
-						text-decoration: none;
-					}
+					&:hover { color: rgb(var(--accent)); text-decoration: none; }
 				}
 
 				.date {
@@ -129,93 +121,97 @@ const recentInsight = (await getCollection('insight'))
 					display: inline-block;
 					font-size: 0.85rem;
 					color: rgb(var(--accent));
-
-					&:hover {
-						text-decoration: underline;
-					}
+					&:hover { text-decoration: underline; }
 				}
 			}
+
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<section class="hero">
-				<h1>燃え尽き症候群について</h1>
-				<h2>2度のバーンアウトを経た回復までの記録</h2>
-				<p>自分の部屋のゴミが拾えない。風呂に入れない。入れても出られない。トイレになかなか行けない。ベッドから起き上がれない。同じ動画、同じ漫画を何回も何回も見続けている。やるべきこと、やらないといけないことが明確なのに、そのとおりに身体がうごかない。<br>
-				生き地獄のような時間。逃げ道のない囲いの中にいて、その外には希死念慮の霧がふわふわと漂っているような暗さ。<br>
-				１度目は中学生のころ。2度目は40歳だった。<br>単なる怠惰ではないと確信があったが、その症状の原因がなんなのか、どうすれば脱することができるのかはわからなかった。<br>
-				また、精神疾患とは少し違うような気もしていた。<br>※うつ病などと燃え尽き証拠群は重なり合うところもあるため、はっきりとした区分けは難しいが。<br>
-				あくまで自認としては、精神疾患とは思えなかった。けれど、とてもではないが正常と思える状態でもなかった。<br>
-				</p>
-			</section>
+			<div class="page-content">
+					<section class="hero">
+						<h1>燃え尽き症候群について</h1>
+						<h2>2度のバーンアウトを経た回復までの記録</h2>
+						<p>
+							自分の部屋のゴミが拾えない。風呂に入れない。入れても出られない。トイレになかなか行けない。ベッドから起き上がれない。同じ動画、同じ漫画を何回も何回も見続けている。やるべきこと、やらないといけないことが明確なのに、そのとおりに身体がうごかない。<br />
+							生き地獄のような時間。逃げ道のない囲いの中にいて、その外には希死念慮の霧がふわふわと漂っているような暗さ。<br />
+							１度目は中学生のころ。2度目は40歳だった。<br />
+							単なる怠惰ではないと確信があったが、その症状の原因がなんなのか、どうすれば脱することができるのかはわからなかった。<br />
+							また、精神疾患とは少し違うような気もしていた。当時少し話題になり始めていた<br />
+							<span class="note-line">※1 うつ病などと燃え尽き症候群は重なり合うところもあるため、はっきりとした区分けは難しいが。<a href="/basics/sample/" class="note-ref ref-basics"><span class="note-ref-cat">基礎知識</span>バーンアウトとは →</a></span><br />
+							あくまで自認としては精神疾患とは思えなかった。けれど、とても正常と思える状態でもなかった。<br>
+							生き地獄だと毎日思っていた。
+						</p>
+					</section>
 
-			<section class="pillars">
-				<a href="/experience" class="pillar-card">
-					<h2>体験</h2>
-					<p>2度の燃え尽き経験を、時系列で記録しています。</p>
-				</a>
-				<a href="/basics" class="pillar-card">
-					<h2>基礎知識</h2>
-					<p>バーンアウトの定義、よく知られた書籍や研究の紹介。</p>
-				</a>
-				<a href="/insight" class="pillar-card">
-					<h2>知見</h2>
-					<p>2度の経験と知識をもとに、自分なりに考えたこと。</p>
-				</a>
-			</section>
+					<section class="pillars">
+						<a href="/experience" class="pillar-card pillar-experience">
+							<h2>体験</h2>
+							<p>2度の燃え尽き経験を、時系列で記録しています。</p>
+						</a>
+						<a href="/basics" class="pillar-card pillar-basics">
+							<h2>基礎知識</h2>
+							<p>バーンアウトの定義、よく知られた書籍や研究の紹介。</p>
+						</a>
+						<a href="/insight" class="pillar-card pillar-insight">
+							<h2>知見</h2>
+							<p>2度の経験と知識をもとに、自分なりに考えたこと。</p>
+						</a>
+					</section>
 
-			{recentExperience.length > 0 && (
-				<section class="recent-section">
-					<h2>体験 — 最近の記事</h2>
-					<ul>
-						{recentExperience.map((post) => (
-							<li>
-								<a href={`/experience/${post.id}/`}>
-									<span>{post.data.title}</span>
-									<span class="date"><FormattedDate date={post.data.eventDate} /></span>
-								</a>
-							</li>
-						))}
-					</ul>
-					<a href="/experience" class="more-link">すべての体験記事 →</a>
-				</section>
-			)}
+					{recentExperience.length > 0 && (
+						<section class="recent-section">
+							<h2>体験 — 最近の記事</h2>
+							<ul>
+								{recentExperience.map((post) => (
+									<li>
+										<a href={`/experience/${post.id}/`}>
+											<span>{post.data.title}</span>
+											<span class="date"><FormattedDate date={post.data.eventDate} /></span>
+										</a>
+									</li>
+								))}
+							</ul>
+							<a href="/experience" class="more-link">すべての体験記事 →</a>
+						</section>
+					)}
 
-			{recentBasics.length > 0 && (
-				<section class="recent-section">
-					<h2>基礎知識 — 最近の記事</h2>
-					<ul>
-						{recentBasics.map((post) => (
-							<li>
-								<a href={`/basics/${post.id}/`}>
-									<span>{post.data.title}</span>
-									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-								</a>
-							</li>
-						))}
-					</ul>
-					<a href="/basics" class="more-link">すべての基礎知識記事 →</a>
-				</section>
-			)}
+					{recentBasics.length > 0 && (
+						<section class="recent-section">
+							<h2>基礎知識 — 最近の記事</h2>
+							<ul>
+								{recentBasics.map((post) => (
+									<li>
+										<a href={`/basics/${post.id}/`}>
+											<span>{post.data.title}</span>
+											<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+										</a>
+									</li>
+								))}
+							</ul>
+							<a href="/basics" class="more-link">すべての基礎知識記事 →</a>
+						</section>
+					)}
 
-			{recentInsight.length > 0 && (
-				<section class="recent-section">
-					<h2>知見 — 最近の記事</h2>
-					<ul>
-						{recentInsight.map((post) => (
-							<li>
-								<a href={`/insight/${post.id}/`}>
-									<span>{post.data.title}</span>
-									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-								</a>
-							</li>
-						))}
-					</ul>
-					<a href="/insight" class="more-link">すべての知見記事 →</a>
-				</section>
-			)}
+					{recentInsight.length > 0 && (
+						<section class="recent-section">
+							<h2>知見 — 最近の記事</h2>
+							<ul>
+								{recentInsight.map((post) => (
+									<li>
+										<a href={`/insight/${post.id}/`}>
+											<span>{post.data.title}</span>
+											<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+										</a>
+									</li>
+								))}
+							</ul>
+							<a href="/insight" class="more-link">すべての知見記事 →</a>
+						</section>
+					)}
+			</div>
 		</main>
 		<Footer />
 	</body>

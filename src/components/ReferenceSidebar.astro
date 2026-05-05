@@ -1,0 +1,126 @@
+---
+interface Reference {
+	slug: string;   // 例: "basics/cortisol"
+	label: string;  // 例: "コルチゾールとは"
+}
+
+interface Props {
+	references?: Reference[];
+}
+
+const { references = [] } = Astro.props;
+
+function collectionOf(slug: string) {
+	return slug.split('/')[0];
+}
+
+function hrefOf(slug: string) {
+	return `/${slug}/`;
+}
+---
+
+{references.length > 0 && (
+	<>
+		{/* PC：サイドバー内に常時表示 */}
+		<nav class="ref-desktop" aria-label="参照リンク">
+			<p class="ref-heading">参照リンク</p>
+			<ul>
+				{references.map(ref => (
+					<li class={`ref-item ref-${collectionOf(ref.slug)}`}>
+						<a href={hrefOf(ref.slug)}>{ref.label} →</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+
+		{/* スマホ：アコーディオン */}
+		<details class="ref-mobile">
+			<summary>参照リンク</summary>
+			<ul>
+				{references.map(ref => (
+					<li class={`ref-item ref-${collectionOf(ref.slug)}`}>
+						<a href={hrefOf(ref.slug)}>{ref.label} →</a>
+					</li>
+				))}
+			</ul>
+		</details>
+	</>
+)}
+
+<style lang="scss">
+	.ref-desktop {
+		display: none;
+
+		@media (min-width: 768px) {
+			display: block;
+			position: sticky;
+			top: 2rem;
+		}
+	}
+
+	.ref-mobile {
+		margin: 0 0 1.5rem;
+		border: 1px solid rgb(var(--color-muted-light));
+		border-radius: 8px;
+		padding: 0.5rem 1rem;
+
+		@media (min-width: 768px) {
+			display: none;
+		}
+
+		summary {
+			font-size: 0.85rem;
+			font-weight: 500;
+			color: rgb(var(--color-muted));
+			cursor: pointer;
+			padding: 0.25rem 0;
+			list-style: none;
+
+			&::before {
+				content: '▶ ';
+				font-size: 0.7rem;
+			}
+		}
+
+		&[open] summary::before {
+			content: '▼ ';
+		}
+	}
+
+	.ref-heading {
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: rgb(var(--color-muted));
+		margin: 0 0 0.75rem;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0.5rem 0 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.ref-item {
+		padding-left: 0.6rem;
+		border-left: 3px solid transparent;
+
+		a {
+			font-size: 0.875rem;
+			line-height: 1.4;
+			color: rgb(var(--color-heading));
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		&.ref-experience { border-left-color: rgb(var(--color-experience)); }
+		&.ref-basics     { border-left-color: rgb(var(--color-basics)); }
+		&.ref-insight    { border-left-color: rgb(var(--color-insight)); }
+	}
+</style>

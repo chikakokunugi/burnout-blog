@@ -1,0 +1,167 @@
+---
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+type Collection = 'experience' | 'basics' | 'insight';
+
+interface Props {
+	currentId: string;
+	currentCollection: Collection;
+	tags: string[];
+	relatedPosts?: string[]; // 手動指定: ["basics/foo", "insight/bar"]
+}
+
+const { currentId, currentCollection, tags, relatedPosts = [] } = Astro.props;
+
+// 全コレクションを取得し、collection情報を付与
+const [allExp, allBasics, allInsight] = await Promise.all([
+	getCollection('experience'),
+	getCollection('basics'),
+	getCollection('insight'),
+]);
+
+type PostWithMeta = {
+	id: string;
+	collection: Collection;
+	title: string;
+	href: string;
+	date: Date;
+	tags: string[];
+};
+
+function toMeta(collection: Collection, posts: typeof allExp | typeof allBasics | typeof allInsight): PostWithMeta[] {
+	return posts.map(p => ({
+		id: p.id,
+		collection,
+		title: p.data.title,
+		href: `/${collection}/${p.id}/`,
+		date: 'eventDate' in p.data ? p.data.eventDate : p.data.pubDate,
+		tags: p.data.tags,
+	}));
+}
+
+const allPosts: PostWithMeta[] = [
+	...toMeta('experience', allExp),
+	...toMeta('basics', allBasics),
+	...toMeta('insight', allInsight),
+];
+
+let related: PostWithMeta[] = [];
+
+if (relatedPosts.length > 0) {
+	// 手動指定: slugから記事を検索
+	related = relatedPosts
+		.map(slugWithCol => {
+			const [col, ...rest] = slugWithCol.split('/');
+			const id = rest.join('/');
+			return allPosts.find(p => p.collection === col && p.id === id);
+		})
+		.filter((p): p is PostWithMeta => p !== undefined);
+} else {
+	// 自動: タグが1つでも一致する他カテゴリ記事（現記事除く）
+	related = allPosts
+		.filter(p => !(p.collection === currentCollection && p.id === currentId))
+		.filter(p => p.tags.some(t => tags.includes(t)))
+		.slice(0, 4);
+}
+
+const LABELS: Record<Collection, string> = {
+	experience: '体験',
+	basics: '基礎知識',
+	insight: '知見',
+};
+---
+
+{related.length > 0 && (
+	<aside class="related-posts">
+		<h2 class="related-heading">関連記事</h2>
+		<ul>
+			{related.map(post => (
+				<li>
+					<a href={post.href} class={`related-item related-${post.collection}`}>
+						<span class="related-badge">{LABELS[post.collection]}</span>
+						<span class="related-title">{post.title}</span>
+						<span class="related-date"><FormattedDate date={post.date} /></span>
+					</a>
+				</li>
+			))}
+		</ul>
+	</aside>
+)}
+
+<style lang="scss">
+	.related-posts {
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgb(var(--color-muted-light));
+	}
+
+	.related-heading {
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: rgb(var(--color-muted));
+		margin: 0 0 1rem;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.related-item {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+		padding: 0.75rem 1rem;
+		border: 1px solid rgb(var(--color-muted-light));
+		border-radius: 8px;
+		text-decoration: none;
+		transition: 0.2s ease;
+		border-left-width: 4px;
+
+		&:hover {
+			box-shadow: var(--box-shadow);
+			text-decoration: none;
+		}
+
+		// カテゴリごとのボーダーカラー
+		&.related-experience {
+			border-left-color: rgb(var(--color-experience));
+			.related-badge { background: rgba(var(--color-experience), 0.12); color: rgb(var(--color-experience)); }
+		}
+		&.related-basics {
+			border-left-color: rgb(var(--color-basics));
+			.related-badge { background: rgba(var(--color-basics), 0.12); color: rgb(var(--color-basics)); }
+		}
+		&.related-insight {
+			border-left-color: rgb(var(--color-insight));
+			.related-badge { background: rgba(var(--color-insight), 0.12); color: rgb(var(--color-insight)); }
+		}
+	}
+
+	.related-badge {
+		flex-shrink: 0;
+		font-size: 0.7rem;
+		padding: 0.1rem 0.5rem;
+		border-radius: 3px;
+		font-weight: 500;
+	}
+
+	.related-title {
+		flex: 1;
+		font-size: 0.95rem;
+		color: rgb(var(--color-heading));
+		line-height: 1.4;
+	}
+
+	.related-date {
+		flex-shrink: 0;
+		font-size: 0.8rem;
+		color: rgb(var(--color-muted));
+	}
+</style>

@@ -2,6 +2,12 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// 参照リンク共通スキーマ
+const referenceItem = z.object({
+	slug: z.string(),   // 例: "basics/cortisol"
+	label: z.string(),  // 例: "コルチゾールとは"
+});
+
 // ─────────────────────────────────────
 // 体験 — 自分の燃え尽き経験(時系列)
 // ─────────────────────────────────────
@@ -18,6 +24,8 @@ const experience = defineCollection({
 			phase: z.enum(['hope', 'strain', 'onset', 'coping', 'recovery']),    // 希望 / 不具合 / 発症 / 低空飛行 / 回復
 			tags: z.array(z.string()).default([]),
 			heroImage: z.optional(image()),
+			references: z.array(referenceItem).default([]),                      // 右サイド参照リンク
+			relatedPosts: z.array(z.string()).default([]),                        // 手動関連記事 slug一覧 例: ["basics/foo"]
 		}),
 });
 
@@ -39,6 +47,8 @@ const basics = defineCollection({
 			sourceYear: z.number().optional(),                                    // 発表年・出版年
 			tags: z.array(z.string()).default([]),
 			heroImage: z.optional(image()),
+			references: z.array(referenceItem).default([]),
+			relatedPosts: z.array(z.string()).default([]),
 		}),
 });
 
@@ -55,6 +65,8 @@ const insight = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			tags: z.array(z.string()).default([]),
 			heroImage: z.optional(image()),
+			references: z.array(referenceItem).default([]),
+			relatedPosts: z.array(z.string()).default([]),
 		}),
 });
 
