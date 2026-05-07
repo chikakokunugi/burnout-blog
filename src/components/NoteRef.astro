@@ -1,0 +1,24 @@
+---
+type Category = 'experience' | 'basics' | 'insight';
+
+interface Props {
+	href:  string;   // リンク先 例: "/basics/cortisol/"
+	cat:   Category; // カテゴリ → ラベルを自動生成
+	label: string;   // リンクのタイトル 例: "バーンアウトとは"
+}
+
+const { href, cat, label } = Astro.props;
+
+const CAT_LABELS: Record<Category, string> = {
+	experience: '体験',
+	basics:     '基礎知識',
+	insight:    '知見',
+};
+---
+
+<span class="note-line">
+	<slot />{/* 注釈テキスト（※番号はCSSで自動付与） */}
+	<a href={href} class={`note-ref ref-${cat}`}>
+		<span class="note-ref-cat">{CAT_LABELS[cat]}</span>{label} →
+	</a>
+</span>

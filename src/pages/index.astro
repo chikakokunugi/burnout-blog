@@ -4,6 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import NoteRef from '../components/NoteRef.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const recentExperience = (await getCollection('experience'))
@@ -138,10 +139,11 @@ const recentInsight = (await getCollection('insight'))
 							自分の部屋のゴミが拾えない。風呂に入れない。入れても出られない。トイレになかなか行けない。ベッドから起き上がれない。同じ動画、同じ漫画を何回も何回も見続けている。やるべきこと、やらないといけないことが明確なのに、そのとおりに身体がうごかない。<br />
 							生き地獄のような時間。逃げ道のない囲いの中にいて、その外には希死念慮の霧がふわふわと漂っているような暗さ。<br />
 							１度目は中学生のころ。2度目は40歳だった。<br />
-							単なる怠惰ではないと確信があったが、その症状の原因がなんなのか、どうすれば脱することができるのかはわからなかった。<br />
+							単なる怠惰ではない、でもその症状の原因がなんなのか、どうすれば脱することができるのかはわからなかった。<br />
 							また、精神疾患とは少し違うような気もしていた。当時少し話題になり始めていた<br />
-							<span class="note-line">※1 うつ病などと燃え尽き症候群は重なり合うところもあるため、はっきりとした区分けは難しいが。<a href="/basics/sample/" class="note-ref ref-basics"><span class="note-ref-cat">基礎知識</span>バーンアウトとは →</a></span><br />
-							あくまで自認としては精神疾患とは思えなかった。けれど、とても正常と思える状態でもなかった。<br>
+							<NoteRef href="/basics/sample/" cat="basics" label="うつ病との違い">
+								うつ病などの精神疾患とは違うようにも思っていた。
+							</NoteRef>
 							生き地獄だと毎日思っていた。
 						</p>
 					</section>

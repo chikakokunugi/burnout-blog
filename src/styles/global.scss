@@ -245,10 +245,21 @@ hr {
 // ─────────────────────────────────────
 
 // 注釈テキスト — 文章として自然に流れる
+// ページ内で ※1, ※2... を自動採番（CSSカウンター）
+main {
+	counter-reset: note-counter;
+}
+
 .note-line {
 	display: block;
 	font-size: 0.85rem;
 	color: rgb(var(--color-muted));
+	text-align: left;
+
+	&::before {
+		counter-increment: note-counter;
+		content: "※" counter(note-counter) " ";
+	}
 }
 
 // 参照リンク — カテゴリ名＋タイトルのカード型
